@@ -32,7 +32,7 @@ var configFile ConfigFile
 var nextIndex = 0
 
 func readFile(filename string) []byte {
-	filename = os.Getenv("SC_DATA") + filename
+	filename = os.Getenv("CCC_DATA") + filename
 
 	log.Infof("Reading file: %v", filename)
 
@@ -81,7 +81,7 @@ func assignUUID(res http.ResponseWriter) (error, string) {
 		log.Fatalf("%v", err)
 	}
 
-	err = os.WriteFile(os.Getenv("SC_DATA")+"/mappings.yaml", []byte(string(mmappings)), 0644)
+	err = os.WriteFile(os.Getenv("CCC_DATA")+"/mappings.yaml", []byte(string(mmappings)), 0644)
 
 	if err != nil {
 		log.Fatalf("%v", err)
