@@ -1,8 +1,8 @@
 # CookieCredentialCannon
 
-Assign credentials to people (optionally by firing them via a canon), everyone gets a UUID assigned via a cookie.
+Give people a cookie (with a unique ID), which is then mapped to credentials (optionally by firing them via a canon).
 
-Useful for workshops.
+Useful for giving out temporary credentials to students during a workshop.
 
 ## config.yaml
 
