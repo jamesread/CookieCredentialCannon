@@ -64,7 +64,7 @@ func assignUUID(res http.ResponseWriter) (error, string) {
 		Value:   id,
 		Expires: time.Now().Add(365 * 24 * time.Hour),
 		Path:    "/",
-		Secure:  false,
+		Secure:  true,
 	}
 
 	log.Infof("Setting cookie %v = %v", configFile.CookieName, id)
