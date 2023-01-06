@@ -9,7 +9,7 @@ Useful for giving out temporary credentials to students during a workshop.
 1. Import from Git.
 2. Use this repo URL, wait for the build to complete.
 3. Add stoage, 1GB is fine, mount it to `/data/`
-4. Set the environment variable `CCC_DATA` to `/data`.
+4. Set the environment variable `CCC_DATA` to `/data/`.
 6. Use the "terminal" feature of the pod to edit `/data/config.yaml`.
 
 ## `config.yaml`
