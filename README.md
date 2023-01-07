@@ -8,17 +8,27 @@ Useful for giving out temporary credentials to students during a workshop.
 
 ### Generate config and htpasswd 
 
-./generateUsers.sh
+This script will generate `config.yaml` and `users.htpasswd`. You can edit `generateUsers.sh` before generating to customize the username/password format.
 
-This will generate config.yaml and users.htpasswd. You can edit generateUsers.sh and config.yaml as needed. You probably want to set the "server" in config.yaml to match your OpenShift console address.
+```
+user@host: ./generateUsers.sh
+```
 
-With the users.htpasswd, upload it to OpenShift to create the users. Docs: https://docs.openshift.com/container-platform/4.11/authentication/identity_providers/configuring-htpasswd-identity-provider.html
+After `config.yaml` has been generated, you will want to edit it, to set the "server" in to match your OpenShift console address.
+
+### Upload `users.htpasswd` as an OAuth provider in OpenShift
+
+With the users.htpasswd, upload it to OpenShift to create the users. This is straightforward and takes just a few minutes. Docs: https://docs.openshift.com/container-platform/4.11/authentication/identity_providers/configuring-htpasswd-identity-provider.html
 
 ### Install CookieCredentialCannon in OpenShift
 
-1. Import from Git.
-2. Use this repo URL, wait for the build to complete.
-3. Add stoage, 1GB is fine, mount it to `/data/`
-4. Set the environment variable `CCC_DATA` to `/data/`.
+1. Go to the Developer perspective, and Add.
+2. Choose "Import from Git".
+3. Use this repo URL ("https://github.com/jamesread/CookieCredentialCannon.git") and submit. Wait for the build to complete.
+4. Edit the deployment to add PV storage, 1GB is fine, mount it to `/data/`
+5. Edit the deployment to set the environment variable `CCC_DATA` to `/data/`.
 6. Use the "terminal" feature of the pod to edit `/data/config.yaml` with the `config.yaml` that you created.
+7. Visit the Route of the application to get to a webpage, you should be assigned to the first user. Horray :-)
+
+Any issues, or help needed, please raise a GitHub issue.
 
