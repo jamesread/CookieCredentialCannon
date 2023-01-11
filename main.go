@@ -117,7 +117,9 @@ func getCredentials(uuid string) (string, string) {
 }
 
 func handleIndex(res http.ResponseWriter, req *http.Request) {
-	if getCookie(req) == "" {
+	cookieUuid := getCookie(req)
+
+	if cookieUuid == "" {
 		err, id := assignUUID(res)
 
 		if err == nil {
@@ -127,9 +129,11 @@ func handleIndex(res http.ResponseWriter, req *http.Request) {
 			fmt.Fprintf(res, "%v", err)
 		}
 	} else {
-		username, password := getCredentials(getCookie(req))
+		username, password := getCredentials(cookieUuid)
 
-		fmt.Fprintf(res, "Your UUID is: %v\n\n", getCookie(req))
+		log.Infof("Cookie UUID %+v is assigned to user: %+v", cookieUuid, username)
+
+		fmt.Fprintf(res, "Your UUID is: %v\n\n", cookieUuid)
 		fmt.Fprintf(res, "Your username is: %v\n\n", username)
 		fmt.Fprintf(res, "Your password is: %v\n\n", password)
 		fmt.Fprintf(res, "Console address: %v", configFile.Server)
