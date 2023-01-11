@@ -160,8 +160,19 @@ func main() {
 
 	nextIndex = len(mappingsFile.Mappings)
 
+	countOfCredentials := len(configFile.Credentials)
+
 	log.Infof("Startup config: %+v", configFile)
-	log.Infof("Next index: %v", nextIndex)
+	log.Infof("Capacity from config.yaml: %+v", countOfCredentials)
+	log.Infof("Next index from mappings.yaml: %v", nextIndex)
+
+	if countOfCredentials == 0 {
+		log.Warnf("No credentials are available! Your config.yaml is probably bad.")
+	}
+
+	if nextIndex == countOfCredentials {
+		log.Warnf("It looks like all credentials have been assigned! Nobody else will be able to get credentials")
+	}
 
 	//	http.Handle("/data", http.FileServer(http.Dir(dataDir)))
 	http.HandleFunc("/", handleIndex)
