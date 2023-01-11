@@ -57,21 +57,23 @@ func assignUUID(res http.ResponseWriter) (error, string) {
 		return errors.New("No more capacity left."), ""
 	}
 
-	id := fmt.Sprintf("%s", uuid.New())
+	theirUuid := fmt.Sprintf("%s", uuid.New())
 
 	c := http.Cookie{
 		Name:    configFile.CookieName,
-		Value:   id,
+		Value:   theirUuid,
 		Expires: time.Now().Add(365 * 24 * time.Hour),
 		Path:    "/",
 		Secure:  false,
 	}
 
-	log.Infof("Setting cookie %v = %v", configFile.CookieName, id)
+	log.Infof("Setting cookie %v = %v", configFile.CookieName, theirUuid)
 
-	mappingsFile.Mappings[id] = nextIndex
+	mappingsFile.Mappings[theirUuid] = nextIndex
 
-	log.Infof("Assigned: %v", nextIndex)
+	theirCredentials := configFile.Credentials[nextIndex]
+
+	log.Infof("Assigning UUID %v to credential index %v (username: %v)", theirUuid, nextIndex, theirCredentials.Username)
 
 	nextIndex += 1
 
@@ -89,13 +91,13 @@ func assignUUID(res http.ResponseWriter) (error, string) {
 
 	http.SetCookie(res, &c)
 
-	return nil, id
+	return nil, theirUuid
 }
 
 func getCookie(req *http.Request) string {
 	for _, cookie := range req.Cookies() {
 		if cookie.Name == configFile.CookieName {
-			log.Infof("Got Cookie %v", cookie.Value)
+			log.Debugf("Got Cookie %v", cookie.Value)
 
 			return cookie.Value
 		}
@@ -117,6 +119,10 @@ func getCredentials(uuid string) (string, string) {
 }
 
 func handleIndex(res http.ResponseWriter, req *http.Request) {
+	if req.URL.String() == "/favicon.ico" {
+		return // cut down log noise
+	}
+
 	cookieUuid := getCookie(req)
 
 	if cookieUuid == "" {
