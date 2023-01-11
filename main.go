@@ -162,7 +162,8 @@ func main() {
 
 	countOfCredentials := len(configFile.Credentials)
 
-	log.Infof("Startup config: %+v", configFile)
+	log.Infof("Config server: %+v", configFile.Server)
+	log.Infof("Config cookie name: %+v", configFile.CookieName)
 	log.Infof("Capacity from config.yaml: %+v", countOfCredentials)
 	log.Infof("Next index from mappings.yaml: %v", nextIndex)
 
